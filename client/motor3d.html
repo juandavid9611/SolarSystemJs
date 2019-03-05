@@ -22,13 +22,21 @@
 		
 		var texture = loader.load("earth-map.jpg");
 		
-		var suntexture = loader.load("sun.jpg")
+		var suntexture = loader.load("sun.jpg");
 		
-		var moontexture = loader.load("cheese_moon.jpg")
+		var mercurytexture = loader.load("mercury_texture.jpg");
+
+		var venustexture = loader.load("venus_texture.jpg");
 		
-		var saturntexture = loader.load("saturn_map_texture.jpg")
+		var moontexture = loader.load("cheese_moon.jpg");
 		
-		var saturnringstexture = loader.load("rings.jpg")
+		var saturntexture = loader.load("saturn_map_texture.jpg");
+		
+		var saturnring1texture = loader.load("rings.jpg");
+		var saturnring2texture = loader.load("ring1.jpg");
+		var saturnring3texture = loader.load("ring2.jpg");
+		var saturnring4texture = loader.load("ring3.jpg");
+
 		
 		var material = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
@@ -44,6 +52,20 @@
 		  map: suntexture
 		});		
 		
+		var mercury_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: mercurytexture
+		});
+
+		var venus_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: venustexture
+		});
+
 		var moon_material = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
 		  specular: 0x333333,
@@ -58,22 +80,55 @@
 		  map: saturntexture
 		});
 		
-		var saturnrings_material = new THREE.MeshPhongMaterial({
+		var saturnrings_material1 = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
 		  specular: 0x333333,
 		  shininess: 15,
-		  map: saturnringstexture
+		  map: saturnring1texture,
+			side: THREE.DoubleSide
 		});
+
+		var saturnrings_material2 = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: saturnring2texture,
+			side: THREE.DoubleSide
+		});
+
+		var saturnrings_material3 = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: saturnring3texture,
+			side: THREE.DoubleSide
+		});
+
+		var saturnrings_material4 = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: saturnring4texture,
+			side: THREE.DoubleSide
+		});
+
+		//Mercury
+		var geometrymercury = new THREE.SphereGeometry( 0.2, 40, 40 );
+		var mercury = new THREE.Mesh( geometrymercury, mercury_material);
+		scene.add( mercury );
+
+		//Venus
+		var geometryvenus = new THREE.SphereGeometry( 0.2, 40, 40 );
+		var venus = new THREE.Mesh( geometryvenus, venus_material);
+		scene.add( venus );
 
 		//Earth
 		var geometry = new THREE.SphereGeometry( 0.4, 40, 40 );
-		var light = new THREE.AmbientLight( 0xb4e7f2);
 		var sphere = new THREE.Mesh( geometry, material);
-		scene.add(light);
 		scene.add( sphere );
 		
 		//Moon
-		var geometrymoon = new THREE.SphereGeometry( 0.2, 40, 40 );
+		var geometrymoon = new THREE.SphereGeometry( 0.08, 40, 40 );
 		var moon = new THREE.Mesh(geometrymoon, moon_material);
 		scene.add(moon);
 		
@@ -87,37 +142,81 @@
 		var geometrysaturn = new THREE.SphereGeometry( 0.7, 40, 40 );
 		var saturn = new THREE.Mesh(geometrysaturn, saturn_material);
 		scene.add(saturn)
-		
-		//Rings
-		var geometryrings = new THREE.TorusGeometry( 1, 0.05, 40, 40 );
-		var torus = new THREE.Mesh( geometryrings, saturnrings_material );
-		scene.add( torus );
-		
-		torus.rotation.x += 5;
+		saturn.rotation.x += 1;
+
+		//Saturn Rings: 1
+		var geometryRing1 = new THREE.RingGeometry(1, 1.08, 100, 100, 0, Math.PI * 2);
+		var ring1 = new THREE.Mesh(geometryRing1, saturnrings_material1);
+		ring1.position.set(25, 30, 0);
+		scene.add(ring1);
+		ring1.rotation.x += 5;
+
+		//Saturn Rings: 2
+		var geometryRing2 = new THREE.RingGeometry(1.09, 1.2, 100, 100, 0, Math.PI * 2);
+		var ring2 = new THREE.Mesh(geometryRing2, saturnrings_material2);
+		ring2.position.set(25, 30, 0);
+		scene.add(ring2);
+		ring2.rotation.x += 5;
+
+		//Saturn Rings: 3
+		var geometryRing3 = new THREE.RingGeometry(1.22, 1.5, 100, 100, 0, Math.PI * 2);
+		var ring3 = new THREE.Mesh(geometryRing3, saturnrings_material3);
+		ring3.position.set(25, 30, 0);
+		scene.add(ring3);
+		ring3.rotation.x += 5;
+
+		//Saturn Rings: 4
+		var geometryRing4 = new THREE.RingGeometry(1.55, 1.7, 100, 100, 0, Math.PI * 2);
+		var ring4 = new THREE.Mesh(geometryRing4, saturnrings_material4);
+		ring4.position.set(25, 30, 0);
+		scene.add(ring4);
+		ring4.rotation.x += 5;
+
+		//Camera & Light
 		camera.position.z = 7;
+		var light = new THREE.AmbientLight( 0xb4e7f2);
+		scene.add(light);
 
 		var render = function () {
 			requestAnimationFrame( render );
 			sphere.rotation.y += 0.1;
 			sun.rotation.y += 0.02;
 			moon.rotation.x += 0.02;
-			saturn.rotation.x += 0.02;
+			saturn.rotation.y += 0.05;
+			mercury.rotation.x += 0.05;
+			venus.rotation.y += 0.05;
+			ring1.rotation.z +=0.01;
+			ring2.rotation.z +=0.09;
+			ring3.rotation.z +=0.02;
+			ring4.rotation.z +=0.01;
 			
+			mercury.position.x = 1.5 * Math.cos(time*0.75);
+			mercury.position.y = 1.5 * Math.sin(time*0.75);
 			
-			sphere.position.x = 3 * Math.cos(time);
-			sphere.position.y = 3 * Math.sin(time);
+			venus.position.x = 2.5 * Math.cos(time);
+			venus.position.y = 2.5 * Math.sin(time);
+
+			sphere.position.x = 3.2 * Math.cos(time/2);
+			sphere.position.y = 3.2 * Math.sin(time/2);
 			
-			moon.position.x = sphere.position.x + Math.cos(moonspeed)
-			moon.position.y = sphere.position.y + Math.sin(moonspeed)
+			moon.position.x = sphere.position.x + Math.cos(moonspeed) * 0.8
+			moon.position.y = sphere.position.y + Math.sin(moonspeed) * 0.8
 			moon.position.z = sphere.position.z 
 			
-			saturn.position.x = 5 * Math.cos(time/2);
-			saturn.position.y = 5 * Math.sin(time/2);
+			saturn.position.x = 5 * Math.cos(time/3);
+			saturn.position.y = 5 * Math.sin(time/3);
+
+			ring1.position.x = 5 * Math.cos(time/3);
+			ring1.position.y = 5 * Math.sin(time/3);
+			ring2.position.x = 5 * Math.cos(time/3);
+			ring2.position.y = 5 * Math.sin(time/3);
+			ring3.position.x = 5 * Math.cos(time/3);
+			ring3.position.y = 5 * Math.sin(time/3);
+			ring4.position.x = 5 * Math.cos(time/3);
+			ring4.position.y = 5 * Math.sin(time/3);
+
 			
-			torus.position.x = 5 * Math.cos(time/2);
-			torus.position.y = 5 * Math.sin(time/2);
-			
-			moonspeed += 0.05
+			moonspeed += 0.01
 			time+= 0.01
 			renderer.render( scene, camera );
 		};
