@@ -19,11 +19,16 @@
 		document.body.appendChild( renderer.domElement );
 
 		var loader = new THREE.TextureLoader();
+		
 		var texture = loader.load("earth-map.jpg");
 		
 		var suntexture = loader.load("sun.jpg")
 		
 		var moontexture = loader.load("cheese_moon.jpg")
+		
+		var saturntexture = loader.load("saturn_map_texture.jpg")
+		
+		var saturnringstexture = loader.load("rings.jpg")
 		
 		var material = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
@@ -37,8 +42,7 @@
 		  specular: 0x333333,
 		  shininess: 15,
 		  map: suntexture
-		});
-		
+		});		
 		
 		var moon_material = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
@@ -46,22 +50,50 @@
 		  shininess: 15,
 		  map: moontexture
 		});
+		
+		var saturn_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: saturntexture
+		});
+		
+		var saturnrings_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: saturnringstexture
+		});
 
-		var geometry = new THREE.SphereGeometry( 0.5, 40, 40 );
-		//var material = new THREE.MeshStandardMaterial();
+		//Earth
+		var geometry = new THREE.SphereGeometry( 0.4, 40, 40 );
 		var light = new THREE.AmbientLight( 0xb4e7f2);
 		var sphere = new THREE.Mesh( geometry, material);
 		scene.add(light);
 		scene.add( sphere );
 		
+		//Moon
 		var geometrymoon = new THREE.SphereGeometry( 0.2, 40, 40 );
 		var moon = new THREE.Mesh(geometrymoon, moon_material);
 		scene.add(moon);
 		
+		//Sun
 		var geometrysun = new THREE.SphereGeometry( 1, 40, 40 );
 		var sun = new THREE.Mesh(geometrysun, sun_material);
 		scene.add(sun)
 		
+		
+		//Saturn
+		var geometrysaturn = new THREE.SphereGeometry( 0.7, 40, 40 );
+		var saturn = new THREE.Mesh(geometrysaturn, saturn_material);
+		scene.add(saturn)
+		
+		//Rings
+		var geometryrings = new THREE.TorusGeometry( 1, 0.05, 40, 40 );
+		var torus = new THREE.Mesh( geometryrings, saturnrings_material );
+		scene.add( torus );
+		
+		torus.rotation.x += 5;
 		camera.position.z = 7;
 
 		var render = function () {
@@ -69,13 +101,21 @@
 			sphere.rotation.y += 0.1;
 			sun.rotation.y += 0.02;
 			moon.rotation.x += 0.02;
+			saturn.rotation.x += 0.02;
 			
-			sphere.position.x = 4 * Math.cos(time);
-			sphere.position.y = 4 * Math.sin(time);
+			
+			sphere.position.x = 3 * Math.cos(time);
+			sphere.position.y = 3 * Math.sin(time);
 			
 			moon.position.x = sphere.position.x + Math.cos(moonspeed)
 			moon.position.y = sphere.position.y + Math.sin(moonspeed)
 			moon.position.z = sphere.position.z 
+			
+			saturn.position.x = 5 * Math.cos(time/2);
+			saturn.position.y = 5 * Math.sin(time/2);
+			
+			torus.position.x = 5 * Math.cos(time/2);
+			torus.position.y = 5 * Math.sin(time/2);
 			
 			moonspeed += 0.05
 			time+= 0.01
