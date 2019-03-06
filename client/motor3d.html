@@ -11,6 +11,9 @@
     <script>
 		var time = 0
 		var moonspeed = 0
+		var othermoonspeed = 0
+		var othermoonspeed1 = 0
+		var othermoonspeed2 = 0
 		var scene = new THREE.Scene();
 		var aspect = window.innerWidth / window.innerHeight;
 		var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
@@ -31,6 +34,9 @@
 		var moontexture = loader.load("cheese_moon.jpg");
 		
 		var saturntexture = loader.load("saturn_map_texture.jpg");
+		
+		var gottexture = loader.load("bluegiant.jpg");
+		
 		
 		var saturnring1texture = loader.load("rings.jpg");
 		var saturnring2texture = loader.load("ring1.jpg");
@@ -111,6 +117,14 @@
 		  map: saturnring4texture,
 			side: THREE.DoubleSide
 		});
+		
+		var got_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: gottexture
+		});
+	
 
 		//Mercury
 		var geometrymercury = new THREE.SphereGeometry( 0.2, 40, 40 );
@@ -171,9 +185,32 @@
 		ring4.position.set(25, 30, 0);
 		scene.add(ring4);
 		ring4.rotation.x += 5;
+		
+		//Got P
+		var geometrygot = new THREE.SphereGeometry( 0.5, 40, 40 );
+		var got = new THREE.Mesh(geometrygot, got_material);
+		scene.add(got)
+		
+		
+		//Moon1
+		var geometrymoon1 = new THREE.SphereGeometry( 0.08, 40, 40 );
+		var moon1 = new THREE.Mesh(geometrymoon1, moon_material);
+		scene.add(moon1);
+		
+		//Moon2
+		var geometrymoon2 = new THREE.SphereGeometry( 0.08, 40, 40 );
+		var moon2 = new THREE.Mesh(geometrymoon2, moon_material);
+		scene.add(moon2);
+		
+		//Moon3
+		var geometrymoon3 = new THREE.SphereGeometry( 0.08, 40, 40 );
+		var moon3 = new THREE.Mesh(geometrymoon3, moon_material);
+		scene.add(moon3);
+		
+
 
 		//Camera & Light
-		camera.position.z = 7;
+		camera.position.z = 20;
 		var light = new THREE.AmbientLight( 0xb4e7f2);
 		scene.add(light);
 
@@ -189,6 +226,7 @@
 			ring2.rotation.z +=0.09;
 			ring3.rotation.z +=0.02;
 			ring4.rotation.z +=0.01;
+			
 			
 			mercury.position.x = 1.5 * Math.cos(time*0.75);
 			mercury.position.y = 1.5 * Math.sin(time*0.75);
@@ -215,13 +253,55 @@
 			ring4.position.x = 5 * Math.cos(time/3);
 			ring4.position.y = 5 * Math.sin(time/3);
 
+			got.position.x = 0;
+			got.position.y = 0;
+		
+			got.position.x -= 7 * Math.cos(time*2);
+			got.position.y -= 7 * Math.sin(time*2);
 			
-			moonspeed += 0.01
+			
+			moon1.position.x = got.position.x + Math.cos(othermoonspeed) * 0.8;
+			moon1.position.y = got.position.y + Math.sin(othermoonspeed) * 0.8;
+			moon1.position.z = got.position.z;
+			
+			moon2.position.x = got.position.x + Math.cos(othermoonspeed1) * 0.8;
+			moon2.position.y = got.position.y; 
+			moon2.position.z = got.position.z + Math.sin(othermoonspeed1) * 0.8;
+			
+			moon3.position.x = got.position.x; 
+			moon3.position.y = got.position.y + Math.sin(othermoonspeed2) * 0.8;
+			moon3.position.z = got.position.z + Math.cos(othermoonspeed2) * 0.8;
+			
+			
+			moonspeed += 0.05
+			othermoonspeed += 0.1
+			othermoonspeed1 += 0.2
+			othermoonspeed2 += 0.15
 			time+= 0.01
 			renderer.render( scene, camera );
 		};
 
 		render();
+		
+		document.addEventListener("keydown", onDocumentKeyDown, false);
+		function onDocumentKeyDown(event) {
+			var keyCode = event.which;
+			if (keyCode == 87) {
+				camera.position.z -= 1;
+			} else if (keyCode == 83) {
+				camera.position.z += 1;
+			} else if (keyCode == 65) {
+				camera.position.x -= 1;
+			} else if (keyCode == 68) {
+				camera.position.x += 1;
+			} else if (keyCode == 32){
+				camera.rotation.y += 0.01;
+			} else if (keyCode == 69) {
+				camera.position.y -= 1;
+			} else if (keyCode == 81) {
+				camera.position.y += 1;
+			}
+		};
     </script>
   </body>
 </html>
