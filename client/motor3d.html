@@ -14,6 +14,9 @@
 		var othermoonspeed = 0
 		var othermoonspeed1 = 0
 		var othermoonspeed2 = 0
+		var deathspeed = 0
+		var lightspeed = 0
+		var namekspeed = 0
 		var scene = new THREE.Scene();
 		var aspect = window.innerWidth / window.innerHeight;
 		var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
@@ -37,6 +40,19 @@
 		
 		var gottexture = loader.load("bluegiant.jpg");
 		
+		var deathstartexture = loader.load("deathstar.png");
+		
+		var namektexture = loader.load("namek.png");
+		
+		var coruscanttexture = loader.load("coruscant.jpg")
+		
+		
+		var nloader = new THREE.TextureLoader();
+		//loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+		loader.load('stars.jpg' , function(texture)
+            {
+             scene.background = texture;  
+            });
 		
 		var saturnring1texture = loader.load("rings.jpg");
 		var saturnring2texture = loader.load("ring1.jpg");
@@ -124,6 +140,27 @@
 		  shininess: 15,
 		  map: gottexture
 		});
+		
+		var deathstar_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: deathstartexture
+		});
+		
+		var namek_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: namektexture
+		});
+		
+		var coruscant_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: coruscanttexture
+		});
 	
 
 		//Mercury
@@ -207,11 +244,26 @@
 		var moon3 = new THREE.Mesh(geometrymoon3, moon_material);
 		scene.add(moon3);
 		
+		//Death star
+		var geometryDeathStar = new THREE.SphereGeometry( 0.7, 40, 40 );
+		var deathstarP = new THREE.Mesh(geometryDeathStar, deathstar_material);
+		scene.add(deathstarP)
+		
+		//Namek
+		var geometryNamek = new THREE.SphereGeometry( 0.2, 40, 40 );
+		var namek = new THREE.Mesh(geometryNamek, namek_material);
+		scene.add(namek)
+		
+		//Coruscant
+		
+		var geometryCoruscant = new THREE.SphereGeometry(0.6, 40, 40);
+		var coruscant = new THREE.Mesh(geometryCoruscant, coruscant_material);
+		scene.add(coruscant)
 
 
 		//Camera & Light
 		camera.position.z = 20;
-		var light = new THREE.AmbientLight( 0xb4e7f2);
+		var light = new THREE.AmbientLight(0xb4e7f2);
 		scene.add(light);
 
 		var render = function () {
@@ -226,38 +278,45 @@
 			ring2.rotation.z +=0.09;
 			ring3.rotation.z +=0.02;
 			ring4.rotation.z +=0.01;
+			deathstarP.rotation.y += 0.03
+			namek.rotation.x += 0.01
+			namek.rotation.z += 0.01
+			
+			coruscant.rotation.y += 0.01
+			coruscant.rotation.z += 0.01
 			
 			
-			mercury.position.x = 1.5 * Math.cos(time*0.75);
-			mercury.position.y = 1.5 * Math.sin(time*0.75);
 			
-			venus.position.x = 2.5 * Math.cos(time);
-			venus.position.y = 2.5 * Math.sin(time);
+			mercury.position.x = 1.6 * Math.cos(time*0.75);
+			mercury.position.y = 1.6 * Math.sin(time*0.75);
+			
+			venus.position.x = 2.8 * Math.cos(time);
+			venus.position.y = 2.8 * Math.sin(time);
 
-			sphere.position.x = 3.2 * Math.cos(time/2);
-			sphere.position.y = 3.2 * Math.sin(time/2);
+			sphere.position.x = 3.6 * Math.cos(time/2);
+			sphere.position.y = 3.6 * Math.sin(time/2);
 			
 			moon.position.x = sphere.position.x + Math.cos(moonspeed) * 0.8
 			moon.position.y = sphere.position.y + Math.sin(moonspeed) * 0.8
 			moon.position.z = sphere.position.z 
 			
-			saturn.position.x = 5 * Math.cos(time/3);
-			saturn.position.y = 5 * Math.sin(time/3);
+			saturn.position.x = 5.5 * Math.cos(time/3);
+			saturn.position.y = 5.5 * Math.sin(time/3);
 
-			ring1.position.x = 5 * Math.cos(time/3);
-			ring1.position.y = 5 * Math.sin(time/3);
-			ring2.position.x = 5 * Math.cos(time/3);
-			ring2.position.y = 5 * Math.sin(time/3);
-			ring3.position.x = 5 * Math.cos(time/3);
-			ring3.position.y = 5 * Math.sin(time/3);
-			ring4.position.x = 5 * Math.cos(time/3);
-			ring4.position.y = 5 * Math.sin(time/3);
+			ring1.position.x = 5.5 * Math.cos(time/3);
+			ring1.position.y = 5.5 * Math.sin(time/3);
+			ring2.position.x = 5.5 * Math.cos(time/3);
+			ring2.position.y = 5.5 * Math.sin(time/3);
+			ring3.position.x = 5.5 * Math.cos(time/3);
+			ring3.position.y = 5.5 * Math.sin(time/3);
+			ring4.position.x = 5.5 * Math.cos(time/3);
+			ring4.position.y = 5.5 * Math.sin(time/3);
 
 			got.position.x = 0;
 			got.position.y = 0;
 		
-			got.position.x -= 7 * Math.cos(time*2);
-			got.position.y -= 7 * Math.sin(time*2);
+			got.position.x -= 8 * Math.cos(time*2);
+			got.position.y -= 8 * Math.sin(time*2);
 			
 			
 			moon1.position.x = got.position.x + Math.cos(othermoonspeed) * 0.8;
@@ -272,11 +331,27 @@
 			moon3.position.y = got.position.y + Math.sin(othermoonspeed2) * 0.8;
 			moon3.position.z = got.position.z + Math.cos(othermoonspeed2) * 0.8;
 			
+			deathstarP.position.x = Math.sin(deathspeed/3) * 7
+			deathstarP.position.y = Math.sin(deathspeed/1.5) * 7;
+			deathstarP.position.z = Math.cos(deathspeed) * 7;
+			
+			
+			coruscant.position.x = 
+			coruscant.position.y = Math.sin(lightspeed) * 10;
+			coruscant.position.z = Math.cos(lightspeed) * 10;
+			
+			namek.position.x = coruscant.position.x; 
+			namek.position.y = coruscant.position.y + Math.sin(othermoonspeed) * 1.5;
+			namek.position.z = coruscant.position.z + Math.cos(othermoonspeed) * 1.5;
+			
 			
 			moonspeed += 0.05
 			othermoonspeed += 0.1
 			othermoonspeed1 += 0.2
 			othermoonspeed2 += 0.15
+			deathspeed += 0.05
+			lightspeed += 0.01
+			namekspeed += 0.03
 			time+= 0.01
 			renderer.render( scene, camera );
 		};
@@ -286,20 +361,22 @@
 		document.addEventListener("keydown", onDocumentKeyDown, false);
 		function onDocumentKeyDown(event) {
 			var keyCode = event.which;
-			if (keyCode == 87) {
+			if (keyCode == 87) { // W
 				camera.position.z -= 1;
-			} else if (keyCode == 83) {
+			} else if (keyCode == 83) { //S
 				camera.position.z += 1;
-			} else if (keyCode == 65) {
+			} else if (keyCode == 65) { // A
 				camera.position.x -= 1;
-			} else if (keyCode == 68) {
+			} else if (keyCode == 68) { // D
 				camera.position.x += 1;
-			} else if (keyCode == 32){
-				camera.rotation.y += 0.01;
-			} else if (keyCode == 69) {
+			} else if (keyCode == 69) { // E
 				camera.position.y -= 1;
-			} else if (keyCode == 81) {
+			} else if (keyCode == 81) { // Q
 				camera.position.y += 1;
+			} else if (keyCode == 90) { // Z
+				camera.rotation.y += 0.01;
+			} else if (keyCode == 67) { // C 
+				camera.rotation.y -= 0.01;
 			}
 		};
     </script>
