@@ -8,6 +8,7 @@
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.min.js"></script>
+	<script src="Orbitcontrols.js"></script>
     <script>
 		var time = 0
 		var moonspeed = 0
@@ -17,10 +18,12 @@
 		var deathspeed = 0
 		var lightspeed = 0
 		var namekspeed = 0
+		
 		var scene = new THREE.Scene();
 		var aspect = window.innerWidth / window.innerHeight;
 		var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
 		var renderer = new THREE.WebGLRenderer();
+		var controls = new THREE.OrbitControls( camera );
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 
@@ -71,7 +74,7 @@
 		  color: 0xaaaaaa,
 		  specular: 0x333333,
 		  shininess: 15,
-		  map: suntexture
+		  map: suntexture		  
 		});		
 		
 		var mercury_material = new THREE.MeshPhongMaterial({
@@ -187,7 +190,7 @@
 		var geometrysun = new THREE.SphereGeometry( 1, 40, 40 );
 		var sun = new THREE.Mesh(geometrysun, sun_material);
 		scene.add(sun)
-		
+				
 		
 		//Saturn
 		var geometrysaturn = new THREE.SphereGeometry( 0.7, 40, 40 );
@@ -263,11 +266,55 @@
 
 		//Camera & Light
 		camera.position.z = 20;
-		var light = new THREE.AmbientLight(0xb4e7f2);
-		scene.add(light);
+		//var light = new THREE.AmbientLight(0xffffff);
+		/*var light_focus = new THREE.SpotLight( 0xffffff );
+		light_focus.angle = Math.PI
+		light_focus.position.set( 0, 0, 0 );
+		light_focus.lookAt(20,20,20)
+		//scene.add(light);
+		scene.add(light_focus)*/
+		
+		var light_sun = new THREE.SpotLight( 0xfaebd7 );
+		light_sun.angle = Math.PI
+		light_sun.position.set( 0, 4, 0 );
+		light_sun.lookAt(0, 0, 0 )
+		scene.add(light_sun)
+		
+		var light_sun2 = new THREE.SpotLight( 0xfaebd7 );
+		light_sun2.angle = Math.PI
+		light_sun2.position.set( 0, -4, 0 );
+		light_sun2.lookAt(0, 0, 0 )
+		scene.add(light_sun2)
+		
+		var light_sun3 = new THREE.SpotLight( 0xfaebd7 );
+		light_sun3.angle = Math.PI
+		light_sun3.position.set( -4, 0, 0 );
+		light_sun3.lookAt(0, 0, 0 )
+		scene.add(light_sun3)
+		
+		var light_sun4 = new THREE.SpotLight( 0xfaebd7 );
+		light_sun4.angle = Math.PI
+		light_sun4.position.set( 4, 0, 0 );
+		light_sun4.lookAt(0, 0, 0 )
+		scene.add(light_sun4)
+		
+		var light_sun5 = new THREE.SpotLight( 0xfaebd7 );
+		light_sun5.angle = Math.PI
+		light_sun5.position.set( 0, 0, 4 );
+		light_sun5.lookAt(0, 0, 0 )
+		scene.add(light_sun5)
+		
+		var light_sun6 = new THREE.SpotLight( 0xfaebd7 );
+		light_sun6.angle = Math.PI
+		light_sun6.position.set( 0, 0, -4 );
+		light_sun6.lookAt(0, 0, 0 )
+		scene.add(light_sun6)
 
 		var render = function () {
 			requestAnimationFrame( render );
+			controls.update();
+			
+
 			sphere.rotation.y += 0.1;
 			sun.rotation.y += 0.02;
 			moon.rotation.x += 0.02;
